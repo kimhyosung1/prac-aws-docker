@@ -55,11 +55,11 @@ jobs:
           echo -e "$PEM" > hello-aws-pi.pem
           chmod 400 hello-aws-pi.pem
 
-      # - name: Decrypt fcm service account json
-      #   env:
-      #     PEM: ${{ secrets.SSH_PEM_KEY }}
-      #   run: |
-      #     sops --input-type json --output-type json -d firebase.json.encrypted > firebase.json
+      - name: Decrypt fcm service account json
+        env:
+          PEM: ${{ secrets.SSH_PEM_KEY }}
+        run: |
+          sops --input-type json --output-type json -d firebase.json.encrypted > firebase.json
 
       # - name: Decrypt development.env, Docker build and push image to Amazon ECR and Development Deploy
       #   env:
