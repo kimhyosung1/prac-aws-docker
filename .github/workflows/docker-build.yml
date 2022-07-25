@@ -69,9 +69,9 @@ jobs:
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: |
           echo "== build ======================================================="
-          docker build --build-arg NODE_ENV=development -t ${ECR}/capa:development -t ${ECR}/capa:development-${TAG} .
+          docker build --build-arg -t ${ECR}/khs:development -t ${ECR}/khs:development-${TAG} .
           echo "== push ========================================================"
-          docker push ${ECR}/capa --all-tags
+          docker push ${ECR}/khs --all-tags
           bash ./deploy.sh development
 
       # - name: Decrypt development.env, Docker build and push image to Amazon ECR and Development Deploy
