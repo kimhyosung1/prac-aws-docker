@@ -27,7 +27,7 @@ jobs:
       - name: Ckeck GPG Key
         run: |
           gpg --version
-          gpg --list-key paul@capa.ai
+          gpg --list-key stop70899@naver.com
 
       - name: Install sops
         env:
@@ -68,51 +68,64 @@ jobs:
           PEM: ${{ secrets.SSH_PEM_KEY }}
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: |
-          sops --input-type dotenv --output-type dotenv -d development.env.encrypted > development.env
           echo "== build ======================================================="
           docker build --build-arg NODE_ENV=development -t ${ECR}/capa:development -t ${ECR}/capa:development-${TAG} .
           echo "== push ========================================================"
           docker push ${ECR}/capa --all-tags
           bash ./deploy.sh development
 
-      - name: Decrypt staging.env, Docker build and push image to Amazon ECR and Staging Deploy
-        env:
-          ECR: ${{ steps.login-ecr.outputs.registry }}
-          TAG: ${{ github.sha }}
-          PEM: ${{ secrets.SSH_PEM_KEY }}
-        if: ${{ github.ref == 'refs/heads/staging' }}
-        run: |
-          sops --input-type dotenv --output-type dotenv -d staging.env.encrypted > staging.env
-          echo "== build ======================================================="
-          docker build --build-arg NODE_ENV=staging -t ${ECR}/capa:latest -t ${ECR}/capa:staging -t ${ECR}/capa:staging-${TAG} .
-          echo "== push ========================================================"
-          docker push ${ECR}/capa --all-tags
-          bash ./deploy.sh staging
+      # - name: Decrypt development.env, Docker build and push image to Amazon ECR and Development Deploy
+      #   env:
+      #     ECR: ${{ steps.login-ecr.outputs.registry }}
+      #     TAG: ${{ github.sha }}
+      #     PEM: ${{ secrets.SSH_PEM_KEY }}
+      #   if: ${{ github.ref == 'refs/heads/develop' }}
+      #   run: |
+      #     sops --input-type dotenv --output-type dotenv -d development.env.encrypted > development.env
+      #     echo "== build ======================================================="
+      #     docker build --build-arg NODE_ENV=development -t ${ECR}/capa:development -t ${ECR}/capa:development-${TAG} .
+      #     echo "== push ========================================================"
+      #     docker push ${ECR}/capa --all-tags
+      #     bash ./deploy.sh development
 
-      - name: Decrypt production.env, Docker build and push image to Amazon ECR and Production Deploy
-        env:
-          ECR: ${{ steps.login-ecr.outputs.registry }}
-          TAG: ${{ github.sha }}
-          PEM: ${{ secrets.SSH_PEM_KEY }}
-        if: ${{ github.ref == 'refs/heads/production' }}
-        run: |
-          sops --input-type dotenv --output-type dotenv -d production.env.encrypted > production.env
-          echo "== build ======================================================="
-          docker build --build-arg NODE_ENV=production -t ${ECR}/capa:production -t ${ECR}/capa:production-${TAG} .
-          echo "== push ========================================================"
-          docker push ${ECR}/capa --all-tags
-          bash ./deploy.sh production
+      # - name: Decrypt staging.env, Docker build and push image to Amazon ECR and Staging Deploy
+      #   env:
+      #     ECR: ${{ steps.login-ecr.outputs.registry }}
+      #     TAG: ${{ github.sha }}
+      #     PEM: ${{ secrets.SSH_PEM_KEY }}
+      #   if: ${{ github.ref == 'refs/heads/staging' }}
+      #   run: |
+      #     sops --input-type dotenv --output-type dotenv -d staging.env.encrypted > staging.env
+      #     echo "== build ======================================================="
+      #     docker build --build-arg NODE_ENV=staging -t ${ECR}/capa:latest -t ${ECR}/capa:staging -t ${ECR}/capa:staging-${TAG} .
+      #     echo "== push ========================================================"
+      #     docker push ${ECR}/capa --all-tags
+      #     bash ./deploy.sh staging
 
-      - name: Decrypt preproduction.env, Docker build and push image to Amazon ECR and preproduction Deploy
-        env:
-          ECR: ${{ steps.login-ecr.outputs.registry }}
-          TAG: ${{ github.sha }}
-          PEM: ${{ secrets.SSH_PEM_KEY }}
-        if: ${{ github.ref == 'refs/heads/preproduction' }}
-        run: |
-          sops --input-type dotenv --output-type dotenv -d preproduction.env.encrypted > staging.env
-          echo "== build ======================================================="
-          docker build --build-arg NODE_ENV=staging -t ${ECR}/capa:preproduction -t ${ECR}/capa:preproduction-${TAG} .
-          echo "== push ========================================================"
-          docker push ${ECR}/capa --all-tags
-          bash ./deploy.sh preproduction
+      # - name: Decrypt production.env, Docker build and push image to Amazon ECR and Production Deploy
+      #   env:
+      #     ECR: ${{ steps.login-ecr.outputs.registry }}
+      #     TAG: ${{ github.sha }}
+      #     PEM: ${{ secrets.SSH_PEM_KEY }}
+      #   if: ${{ github.ref == 'refs/heads/production' }}
+      #   run: |
+      #     sops --input-type dotenv --output-type dotenv -d production.env.encrypted > production.env
+      #     echo "== build ======================================================="
+      #     docker build --build-arg NODE_ENV=production -t ${ECR}/capa:production -t ${ECR}/capa:production-${TAG} .
+      #     echo "== push ========================================================"
+      #     docker push ${ECR}/capa --all-tags
+      #     bash ./deploy.sh production
+
+      # - name: Decrypt preproduction.env, Docker build and push image to Amazon ECR and preproduction Deploy
+      #   env:
+      #     ECR: ${{ steps.login-ecr.outputs.registry }}
+      #     TAG: ${{ github.sha }}
+      #     PEM: ${{ secrets.SSH_PEM_KEY }}
+      #   if: ${{ github.ref == 'refs/heads/preproduction' }}
+      #   run: |
+      #     sops --input-type dotenv --output-type dotenv -d preproduction.env.encrypted > staging.env
+      #     echo "== build ======================================================="
+      #     docker build --build-arg NODE_ENV=staging -t ${ECR}/capa:preproduction -t ${ECR}/capa:preproduction-${TAG} .
+      #     echo "== push ========================================================"
+      #     docker push ${ECR}/capa --all-tags
+      #     bash ./deploy.sh preproduction
