@@ -55,27 +55,23 @@ jobs:
           echo -e "$PEM" > hello-aws-pi.pem
           chmod 400 hello-aws-pi.pem
 
+      - name: Decrypt development.env file
+        if: contains(github.ref, 'develop')
+        run: |
+          sops --input-type dotenv --output-type dotenv -d main.env.encrypted > main.env
+
+      - name: main Run Deploy Script
+        if: contains(github.ref, 'main')
+        env:
+          PEM: ${{ secrets.SSH_PEM_KEY }}
+        run: |
+          bash ./deploy.sh main
+
       # - name: Decrypt fcm service account json
       #   env:
       #     PEM: ${{ secrets.SSH_PEM_KEY }}
       #   run: |
       #     sops --input-type json --output-type json -d firebase.json.encrypted > firebase.json
-
-      - name: Decrypt main.env, Docker build and push image to Amazon ECR and main Deploy
-        env:
-          ECR: ${{ steps.login-ecr.outputs.registry }}
-          TAG: ${{ github.sha }}
-          PEM: ${{ secrets.SSH_PEM_KEY }}
-        if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          echo "== build ======================================================="
-          echo "== build ECR==${ECR}=="
-          echo "== build TAG==${TAG}=="
-
-          docker build --build-arg -t ${ECR}/khs_base:latest -t ${ECR}/khs_base:latest-${TAG} .
-          echo "== push ========================================================"
-          docker push ${ECR}/khs_base:latest --all-tags
-          bash ./deploy.sh main
 
       # - name: Decrypt development.env, Docker build and push image to Amazon ECR and Development Deploy
       #   env:

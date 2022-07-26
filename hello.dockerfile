@@ -24,15 +24,9 @@ EXPOSE 8080
 
 CMD [ "node", "dist/main" ]
 
-# FROM 442595548368.dkr.ecr.ap-northeast-2.amazonaws.com/capa_base:latest as capa
-# WORKDIR /capa
-# COPY --from=build /capa /capa
-
-
-
-
-
-
+FROM 591362340905.dkr.ecr.ap-northeast-2.amazonaws.com/khs_base:latest as hello_docker
+WORKDIR /hello_docker
+COPY --from=build /hello_docker /hello_docker
 
 
 # FROM 442595548368.dkr.ecr.ap-northeast-2.amazonaws.com/capa_base:latest as build
