@@ -72,9 +72,9 @@ jobs:
           echo "== build ECR==${ECR}=="
           echo "== build TAG==${TAG}=="
 
-          docker build --build-arg -t ${ECR}/khs:main -t ${ECR}/khs:main-${TAG} .
+          docker build --build-arg -t ${ECR}/khs_base:latest -t ${ECR}/khs_base:latest-${TAG} .
           echo "== push ========================================================"
-          docker push ${ECR}/khs --all-tags
+          docker push ${ECR}/khs_base:latest --all-tags
           bash ./deploy.sh main
 
       # - name: Decrypt development.env, Docker build and push image to Amazon ECR and Development Deploy
