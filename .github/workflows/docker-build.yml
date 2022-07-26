@@ -55,7 +55,13 @@ jobs:
           echo -e "$PEM" > hello-aws-pi.pem
           chmod 400 hello-aws-pi.pem
 
-      - name: Decrypt development.env file
+      - name: create env file
+        working-directory: /home/ec2-user
+        run: |
+          touch main.env
+          cat << EOF >> main.env
+
+      - name: Decrypt main.env file
         if: contains(github.ref, 'develop')
         run: |
           sops --input-type dotenv --output-type dotenv -d main.env.encrypted > main.env
