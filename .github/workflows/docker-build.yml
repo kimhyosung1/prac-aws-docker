@@ -69,6 +69,9 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "== build ======================================================="
+          echo "== build ECR==${ECR}=="
+          echo "== build TAG==${TAG}=="
+
           docker build --build-arg -t ${ECR}/khs:main -t ${ECR}/khs:main-${TAG} .
           echo "== push ========================================================"
           docker push ${ECR}/khs --all-tags
