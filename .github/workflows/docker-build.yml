@@ -49,8 +49,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          # username: ${{ github.actor }}
-          username: pi.kim@capa.ai
+          username: ${{ github.actor }}
           password: ${{ secrets.GIT_ACCESS_TOKEN }}
       - name: Build and push
         id: docker_build
@@ -70,8 +69,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: pi.kim@capa.ai
-          # username: ${{ github.actor }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GIT_ACCESS_TOKEN }}
       # 3000 -> 8080 포트로 수행하도록 지정
       - name: Docker run
