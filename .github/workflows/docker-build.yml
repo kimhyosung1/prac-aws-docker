@@ -48,6 +48,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Generate Pem
         env:
           PEM: ${{ secrets.SSH_PEM_KEY }}
@@ -55,23 +58,22 @@ jobs:
           echo -e "$PEM" > hello-aws-pi.pem
           chmod 400 hello-aws-pi.pem
 
-      - name: create env file
-        working-directory: /home/ec2-user
-        run: |
-          touch main.env
-          cat << EOF >> main.env
+      # - name: create env file
+      #   run: |
+      #     touch main.env
+      #     cat << EOF >> main.env
 
-      - name: Decrypt main.env file
-        if: contains(github.ref, 'develop')
-        run: |
-          sops --input-type dotenv --output-type dotenv -d main.env.encrypted > main.env
+      # - name: Decrypt main.env file
+      #   if: contains(github.ref, 'develop')
+      #   run: |
+      #     sops --input-type dotenv --output-type dotenv -d main.env.encrypted > main.env
 
-      - name: main Run Deploy Script
-        if: contains(github.ref, 'main')
-        env:
-          PEM: ${{ secrets.SSH_PEM_KEY }}
-        run: |
-          bash ./deploy.sh main
+      # - name: main Run Deploy Script
+      #   if: contains(github.ref, 'main')
+      #   env:
+      #     PEM: ${{ secrets.SSH_PEM_KEY }}
+      #   run: |
+      #     bash ./deploy.sh main
 
       # - name: Decrypt fcm service account json
       #   env:
