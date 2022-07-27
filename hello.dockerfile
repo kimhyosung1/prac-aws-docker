@@ -103,3 +103,4 @@ CMD [ "yarn", "start"]
 
 # docker build -t hello --tag nest-auto-deploy:0.0.1 -f hello.dockerfile . 
 # docker run --name nest-auto-deploy -d -p 3000:3000 nest-auto-deploy:0.0.1
+# docker run --name nuxt-auto-deploy -d -p 3000:3000 nuxt-auto-deploy:0.0.1
