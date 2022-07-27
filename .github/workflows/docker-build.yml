@@ -54,7 +54,6 @@ jobs:
           registry: ghcr.io
           # username: ${{ github.actor }}
           username: kimhyosung3
-          kimhyosung1
           password: ${{ secrets.GIT_ACCESS_TOKEN }}
 
       - name: Build and push
