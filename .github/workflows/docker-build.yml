@@ -52,7 +52,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          # username: ${{ github.actor }}
+          username: nest-auto-deploy
           password: ${{ secrets.GIT_ACCESS_TOKEN }}
 
       - name: Build and push
@@ -62,7 +63,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:latest
-          
+
   # 배포 Job
   deploy:
     needs: build  # build 후에 실행되도록 정의
