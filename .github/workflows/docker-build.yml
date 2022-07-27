@@ -45,14 +45,14 @@ jobs:
             ${{ runner.os }}-buildx-
 
       # GitHub 컨테이너 레지스트리에 로그인 후 빌드 & 푸시
-      - name: Login to ghcr
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          # username: ${{ github.actor }}
-          # password: ${{ secrets.GIT_ACCESS_TOKEN }}
-          username: stop7089
-          password: rlagytjd9041!
+      # - name: Login to ghcr
+      #   uses: docker/login-action@v1
+      #   with:
+      #     registry: ghcr.io
+      #     # username: ${{ github.actor }}
+      #     # password: ${{ secrets.GIT_ACCESS_TOKEN }}
+      #     username: stop7089
+      #     password: rlagytjd9041!
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
