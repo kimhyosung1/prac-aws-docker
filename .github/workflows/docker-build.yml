@@ -28,7 +28,7 @@ jobs:
       #   id: login-ecr
       #   uses: aws-actions/amazon-ecr-login@v1
 
-      github repository에서 checkout
+      # github repository에서 checkout
       - uses: actions/checkout@v2
 
       # # docker build 수행
